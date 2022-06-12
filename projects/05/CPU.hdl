@@ -25,6 +25,16 @@
  * than to the address resulting from executing the current instruction. 
  */
 
+// The 16-bit value of the CPU ’s instruction input represents either an A-instruction or a C-
+// instruction. In order to figure out the semantics of this instruction, we can parse, or unpack it,
+// into the following fields: “ ixxaccccccdddjjj ”. The i -bit (also known as opcode) codes the
+// instruction type, which is either 0 for an A-instruction or 1 for a C-instruction. In case of an A-
+// instruction, the entire instruction represent the 16-bit value of the constant that should be loaded
+// into the A register. In case of a C-instruction, the a - and c -bits code the comp part of the
+// instruction, while the d - and j -bits code the dest and jump parts of the instruction, respectively
+// (the x- bits are not used, and can be ignored).
+// 111 0 011111 000 010
+
 CHIP CPU {
 
     IN  inM[16],         // M value input  (M = contents of RAM[A])
@@ -39,5 +49,67 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+    // For C-Instruction:
+    // Format of the C-instruction is 111a cccc ccdd djjj
+    // bits [2..0] descibe jump
+    // bits [5..3] describe dest of data
+    // bits [11..6] describe the ALU behaviour
+    // bit [12] also called a decides whether A or M is used; 
+    // bits [14..13] are unused
+    // bit [15] is signaling the C-Instruction 
+
+    Not(in=instruction[15],out=nottoplevelinstructionbit);
+
+    // For A Register either A-Istruction 0xxxxxxxxxxxxxxx to load or from ALU
+    // Either the Data that is loaded or ALU output depending on control bits later
+    Mux16(a=instruction,b=ALUout,sel=instruction[15],out=ARegIn);
+
+    Or(a=nottoplevelinstructionbit,b=instruction[5],out=ARegLoad);
+
+    And(a=instruction[4],b=instruction[15],out=DRegLoad); // check for C instruction
+
+    ARegister(in=ARegIn,load=ARegLoad,out=ARegOut);
+    DRegister(in=ALUout,load=DRegLoad,out=DRegOut);
+
+    // Decide whether A or M is y
+    Mux16(a=ARegOut,b=inM,sel=instruction[12],out=yInALU);
+
+    ALU(
+        x=DRegOut, y=yInALU,  // 16-bit inputs        
+        zx=instruction[11], // zero the x input?
+        nx=instruction[10], // negate the x input?
+        zy=instruction[9], // zero the y input?
+        ny=instruction[8], // negate the y input?
+        f=instruction[7],  // compute out = x + y (if 1) or x & y (if 0)
+        no=instruction[6], // negate the out output?
+        out=ALUout, // 16-bit output
+        zr=ALUequal0, // 1 if (out == 0), 0 otherwise
+        ng=ALUlessthan0);
+
+    Not(in=ALUequal0,out=ALUnotequal0);
+    Not(in=ALUlessthan0,out=ALUgreaterequal0); 
+
+    And(a=ALUnotequal0,b=ALUgreaterequal0,out=ALUgreater0); // greater
+
+    // Jump Decoding here:
+    And(a=instruction[2],b=ALUlessthan0,out=JumpLTZcomp);
+    And(a=instruction[1],b=ALUequal0,out=JumpEQZcomp);
+    And(a=instruction[0],b=ALUgreater0,out=JumpGTZcomp);
+
+    Or(a=JumpLTZcomp,b=JumpEQZcomp,out=JumpTemp);
+    Or(a=JumpTemp,b=JumpGTZcomp,out=JumpDBit);
+
+    And(a=JumpDBit,b=instruction[15],out=JumpDBitIBit15checked);
+
+    PC(in=ARegOut,load=JumpDBitIBit15checked,inc=true,reset=reset,out[0..14]=pc);
+
+
+    // Export addressM
+    Or16(a=ARegOut,b=false,out[0..14]=addressM);
+
+    // Export outM from ALU
+    Or16(a=ALUout,b=false,out=outM);
+
+    // Export writeM from instruction
+    And(a=instruction[3],b=instruction[15],out=writeM);
 }
