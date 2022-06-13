@@ -241,7 +241,7 @@ impl VMCommand{
                         // jump if true
                         buffer_string += &format!("@_COMP_LABEL_{}_TRUE\n",instr_number);
                         buffer_string += "D; JEQ\n";
-                        buffer_string += &format!("@_COMP_LABEL_{}_FALSE\n",instr_number);;
+                        buffer_string += &format!("@_COMP_LABEL_{}_FALSE\n",instr_number);
                         buffer_string += "0; JMP\n";
                         
                         buffer_string += label_true;
@@ -253,7 +253,7 @@ impl VMCommand{
                         buffer_string += "@SP\n"; 
                         buffer_string += "M=M+1\n"; // Fix Stack Location Back
 
-                        buffer_string += &format!("@_COMP_LABEL_{}_END\n",instr_number);;
+                        buffer_string += &format!("@_COMP_LABEL_{}_END\n",instr_number);
                         buffer_string += "0; JMP\n";
 
                         buffer_string += label_false;
@@ -287,7 +287,7 @@ impl VMCommand{
                         // jump if true
                         buffer_string += &format!("@_COMP_LABEL_{}_TRUE\n",instr_number);
                         buffer_string += "D; JGT\n";
-                        buffer_string += &format!("@_COMP_LABEL_{}_FALSE\n",instr_number);;
+                        buffer_string += &format!("@_COMP_LABEL_{}_FALSE\n",instr_number);
                         buffer_string += "0; JMP\n";
                         
                         buffer_string += label_true;
@@ -299,7 +299,7 @@ impl VMCommand{
                         buffer_string += "@SP\n"; 
                         buffer_string += "M=M+1\n"; // Fix Stack Location Back
 
-                        buffer_string += &format!("@_COMP_LABEL_{}_END\n",instr_number);;
+                        buffer_string += &format!("@_COMP_LABEL_{}_END\n",instr_number);
                         buffer_string += "0; JMP\n";
 
                         buffer_string += label_false;
@@ -333,7 +333,7 @@ impl VMCommand{
                         // jump if true
                         buffer_string += &format!("@_COMP_LABEL_{}_TRUE\n",instr_number);
                         buffer_string += "D; JLT\n";
-                        buffer_string += &format!("@_COMP_LABEL_{}_FALSE\n",instr_number);;
+                        buffer_string += &format!("@_COMP_LABEL_{}_FALSE\n",instr_number);
                         buffer_string += "0; JMP\n";
                         
                         buffer_string += label_true;
@@ -345,7 +345,7 @@ impl VMCommand{
                         buffer_string += "@SP\n"; 
                         buffer_string += "M=M+1\n"; // Fix Stack Location Back
 
-                        buffer_string += &format!("@_COMP_LABEL_{}_END\n",instr_number);;
+                        buffer_string += &format!("@_COMP_LABEL_{}_END\n",instr_number);
                         buffer_string += "0; JMP\n";
 
                         buffer_string += label_false;
@@ -594,9 +594,22 @@ impl VMCommand{
                     _ => unreachable!()
                 }
             },
-            VMCommandType::Label => todo!(),
-            VMCommandType::Goto => todo!(),
-            VMCommandType::IfGoto => todo!(),
+            VMCommandType::Label => {
+                buffer_string += &format!("(LABEL_{})\n",self.arg1);
+            },
+            VMCommandType::Goto => {
+                buffer_string += &format!("@LABEL_{}\n",self.arg1);
+                buffer_string += "0; JMP";
+            },
+            VMCommandType::IfGoto => {
+                // Get Data From Stack
+                buffer_string += "@SP\n";
+                buffer_string += "M=M-1\n";
+                buffer_string += "A=M\n";
+                buffer_string += "D=M\n"; // D = *SP
+                buffer_string += &format!("@LABEL_{}\n",self.arg1);
+                buffer_string += "D; JGT";
+            },
             VMCommandType::Function => todo!(),
             VMCommandType::Return => todo!(),
             VMCommandType::Call => todo!(),
