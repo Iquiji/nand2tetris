@@ -1,0 +1,97 @@
+class Board{
+    field Matrix2D landed;
+
+
+    // each field is 12x12 Pixels
+    constructor Board new(){
+        let landed = Matrix2D.new(10,21);
+
+        return this;
+    }
+    method void set(int w,int h,int val){
+        do landed.set(w,h,val);
+        return;
+    }
+    method int get(int w,int h){
+        var int res;
+        let res = landed.get(w,h);
+        return res;
+    }
+    method int checkLines(){
+        // x start of at 10*16
+        var int witdh_idx,height_idx;
+        var int cell_in_row;
+        var int x,y;
+        var int move_down_fut;
+        var int temp_val;
+
+        let witdh_idx = 0;
+        let height_idx = 20;
+
+        let move_down_fut = 0;
+
+
+        while (height_idx > 0){
+            let cell_in_row = 0;
+            while (witdh_idx < 10){
+                // print to that location if to print
+                // move down
+                if (move_down_fut > 0){
+                    let temp_val = landed.get(witdh_idx,height_idx);
+                    do landed.set(witdh_idx,height_idx + move_down_fut,temp_val);
+                    do landed.set(witdh_idx,height_idx,0);
+                }
+
+                if (landed.get(witdh_idx,height_idx) = 1){
+                    let cell_in_row = cell_in_row + 1;
+                }
+                let witdh_idx = witdh_idx + 1;
+            }
+            if (cell_in_row = 10){
+                let move_down_fut = move_down_fut + 1;
+                let witdh_idx = 0;
+                while (witdh_idx < 10){
+                    // reset to 0
+                    do landed.set(witdh_idx,height_idx,0);
+                    let witdh_idx = witdh_idx + 1;
+                }
+            }
+
+            let witdh_idx = 0;
+            let height_idx = height_idx - 1;
+        }
+        return move_down_fut;
+    }
+
+    method void flush(){
+        // x start of at 10*16
+        var int witdh_idx,height_idx;
+        var int to_print;
+        var int x,y;
+
+        let witdh_idx = 0;
+        let height_idx = 0;
+
+        while (witdh_idx < 10){
+            while (height_idx < 21){
+                let to_print = landed.get(witdh_idx,height_idx);
+                // print to that location if to print
+                if (to_print = 1){
+                    let x = (16+witdh_idx)*12;
+                    let y = height_idx*12;
+
+                    do Screen.drawRectangle(x,y,x+11,y+11);
+                }
+                let height_idx = height_idx + 1;
+            }
+            let height_idx = 0;
+            let witdh_idx = witdh_idx + 1;
+        }
+        return;
+    }
+    method void dispose() {
+      do landed.dispose();
+      do Memory.deAlloc(this);
+      return;
+    }
+}

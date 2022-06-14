@@ -1,0 +1,344 @@
+class Piece{
+    field Matrix2D shape;
+    field int size_x,size_y;
+    field int x,y;
+
+    constructor Piece new(int t){
+
+        if (t = 0){
+            let size_x = 4;
+            let size_y = 1;
+            
+            let shape = Matrix2D.new(size_x,size_y);
+            do shape.set(0,0,1);
+            do shape.set(1,0,1);
+            do shape.set(2,0,1);
+            do shape.set(3,0,1);
+        }
+        if (t = 1){
+            let size_x = 3;
+            let size_y = 2;
+            
+            let shape = Matrix2D.new(size_x,size_y);
+            do shape.set(0,0,1);
+            do shape.set(0,1,1);
+            do shape.set(1,1,1);
+            do shape.set(2,1,1);
+        }
+        if (t = 2){
+            let size_x = 3;
+            let size_y = 2;
+            
+            let shape = Matrix2D.new(size_x,size_y);
+            do shape.set(0,1,1);
+            do shape.set(1,1,1);
+            do shape.set(2,1,1);
+            do shape.set(2,0,1);
+        }
+        if (t = 3){
+            let size_x = 2;
+            let size_y = 2;
+            
+            let shape = Matrix2D.new(size_x,size_y);
+            do shape.set(0,0,1);
+            do shape.set(1,0,1);
+            do shape.set(0,1,1);
+            do shape.set(1,1,1);            
+        }
+        if (t = 4){
+            let size_x = 3;
+            let size_y = 2;
+            
+            let shape = Matrix2D.new(size_x,size_y);
+            do shape.set(0,1,1);
+            do shape.set(1,0,1);
+            do shape.set(1,1,1);
+            do shape.set(2,0,1);
+        }
+        if (t = 5){
+            let size_x = 3;
+            let size_y = 2;
+            
+            let shape = Matrix2D.new(size_x,size_y);
+            do shape.set(0,1,1);
+            do shape.set(1,1,1);
+            do shape.set(2,1,1);
+            do shape.set(1,0,1);            
+        }
+        if (t = 6){
+            let size_x = 3;
+            let size_y = 2;
+            
+            let shape = Matrix2D.new(size_x,size_y);
+            do shape.set(0,0,1);
+            do shape.set(1,0,1);
+            do shape.set(1,1,1);
+            do shape.set(2,1,1);            
+        }
+
+        let x = 4;
+        let y = 0;
+
+        return this;
+    }
+    method int getX(){
+        return x;
+    }
+    method int getY(){
+        return y;
+    }
+    method int getSizeX(){
+        return size_x;
+    }
+    method int getSizeY(){
+        return size_y;
+    }
+    method int getShape(){
+        return shape;
+    }
+    method void moveX(int amount){
+        let x = x + amount;
+
+        if (x < 0){
+            let x = 0;
+        }
+        if ((x + size_x ) > 10){
+            let x = 10 - size_x;
+        }
+
+        return;
+    }
+    method int moveY(int amount){
+        let y = y + amount;
+
+        if ((y + size_y) > 21){
+            let y = 21 - size_y;
+            return 1;
+        }
+        if ((y + size_y) = 21){
+            let y = 21 - size_y;
+            return 1;
+        }
+        return 0;
+    }
+    // clockwise90DegreesRotatedMatrix = reverseTheOrderOfColumns(Transpose(originalMatrix))
+    // anticlockwise90DegreesRotatedMatrix = reverseTheOrderOfRows(Transpose(originalMatrix))
+    // Transpose = swap x and y
+    method void rotateRight(){
+        var Matrix2D new_shape;
+        var int idx,idy;
+        var int temp_for_swap;
+
+        var int board_val_temp;
+        var int shape_val_temp;
+
+        let new_shape = Matrix2D.new(size_y,size_x);
+
+        // Transpose
+        let idx = 0;
+        let idy = 0;
+        while (idx < size_x){
+            while (idy < size_y){
+                // get value of out shape and plug that reversed into the new shape
+                let shape_val_temp = shape.get(idx,idy);
+                
+                do new_shape.set(idy,idx,shape_val_temp);
+
+                let idy = idy + 1;
+            }
+            let idy = 0;
+            let idx = idx + 1;
+        }
+
+        let temp_for_swap = size_x;
+        let size_x = size_y;
+        let size_y = temp_for_swap;
+
+        let shape = new_shape;
+        let new_shape = Matrix2D.new(size_x,size_y); 
+
+        // reverseTheOrderOfColumns
+        let idx = 0;
+        let idy = 0;
+        while (idx < size_x){
+            while (idy < size_y){
+                // get value of out shape and plug that reversed into the new shape
+                let shape_val_temp = shape.get(idx,idy);
+                let board_val_temp = (size_x - 1) - idx;
+                
+                do new_shape.set(board_val_temp,idy,shape_val_temp);
+
+                let idy = idy + 1;
+            }
+            let idy = 0;
+            let idx = idx + 1;
+        }
+        let shape = new_shape;
+
+        return;
+    }
+    method void rotateLeft(){
+        var Matrix2D new_shape;
+        var int idx,idy;
+        var int temp_for_swap;
+
+        var int board_val_temp;
+        var int shape_val_temp;
+
+        let new_shape = Matrix2D.new(size_y,size_x);
+
+        // Transpose
+        let idx = 0;
+        let idy = 0;
+        while (idx < size_x){
+            while (idy < size_y){
+                // get value of out shape and plug that reversed into the new shape
+                let shape_val_temp = shape.get(idx,idy);
+                
+                do new_shape.set(idy,idx,shape_val_temp);
+
+                let idy = idy + 1;
+            }
+            let idy = 0;
+            let idx = idx + 1;
+        }
+
+        let temp_for_swap = size_x;
+        let size_x = size_y;
+        let size_y = temp_for_swap;
+
+        let shape = new_shape;
+        let new_shape = Matrix2D.new(size_x,size_y); 
+
+        // reverseTheOrderOfRows
+        let idx = 0;
+        let idy = 0;
+        while (idx < size_x){
+            while (idy < size_y){
+                // get value of out shape and plug that reversed into the new shape
+                let shape_val_temp = shape.get(idx,idy);
+                let board_val_temp = (size_y - 1) - idy;
+                
+                do new_shape.set(idx,board_val_temp,shape_val_temp);
+
+                let idy = idy + 1;
+            }
+            let idy = 0;
+            let idx = idx + 1;
+        }
+        let shape = new_shape;
+        
+        return;
+    }
+
+    method void flush(){
+        var int witdh_idx,height_idx;
+        var int to_print;
+        var int px_x,px_y;
+
+        let witdh_idx = 0;
+        let height_idx = 0;
+
+        while (witdh_idx < size_x){
+            while (height_idx < size_y){
+                let to_print = shape.get(witdh_idx,height_idx);
+                // print to that location if to print
+                if (to_print = 1){
+                    let px_x = (16+x+witdh_idx)*12;
+                    let px_y = (y+height_idx)*12;
+
+                    do Screen.drawRectangle(px_x,px_y,px_x+11,px_y+11);
+                }
+                let height_idx = height_idx + 1;
+            }
+            do Output.println();
+            let height_idx = 0;
+            let witdh_idx = witdh_idx + 1;
+        }
+        return;
+    }
+    method void flush_next(){
+        var int witdh_idx,height_idx;
+        var int to_print;
+        var int px_x,px_y;
+
+        let witdh_idx = 0;
+        let height_idx = 0;
+
+        while (witdh_idx < size_x){
+            while (height_idx < size_y){
+                let to_print = shape.get(witdh_idx,height_idx);
+                // print to that location if to print
+                if (to_print = 1){
+                    let px_x = (30+x+witdh_idx)*12;
+                    let px_y = (10+height_idx)*12;
+
+                    do Screen.drawRectangle(px_x,px_y,px_x+11,px_y+11);
+                }
+                let height_idx = height_idx + 1;
+            }
+            do Output.println();
+            let height_idx = 0;
+            let witdh_idx = witdh_idx + 1;
+        }
+        return;
+    }
+
+    method int collisionCheck(Board board){
+        var int idx,idy;
+        var int collision_count;
+        var int board_val_temp;
+        var int shape_val_temp;
+
+        let collision_count = 0;
+
+        while (idx < size_x){
+            while (idy < size_y){
+                let shape_val_temp = shape.get(idx,idy);
+                // has that location in shape an active cell
+                if (shape_val_temp = 1){
+                    // check against the corresponding cell in the game board
+                    let board_val_temp = board.get(x+idx,y+idy);
+
+                    if (board_val_temp = 1){
+                        let collision_count = collision_count + 1;
+                    }
+                    
+                }
+                let idy = idy + 1;
+            }
+            let idy = 0;
+            let idx = idx + 1;
+        }
+        return collision_count;
+    }
+
+    method void integrate_piece_in_board(Board board){
+        var int idx,idy;
+        var int collision_count;
+        var int board_val_temp;
+        var int shape_val_temp;
+
+        let collision_count = 0;
+
+        while (idx < size_x){
+            while (idy < size_y){
+                let shape_val_temp = shape.get(idx,idy);
+                // has that location in shape an active cell
+                if (shape_val_temp = 1){
+                    // set that location in landed board
+                    do board.set(x+idx,y+idy,1);   
+                }
+                let idy = idy + 1;
+            }
+            let idy = 0;
+            let idx = idx + 1;
+        }
+        return;
+    }
+
+    method void dispose(){
+        do Memory.deAlloc(this);
+        return;
+    }
+}

@@ -1,0 +1,14 @@
+class Main {
+    function void main() {
+        var GameController game;
+
+        let game = GameController.new();
+        do game.run();
+
+        do Sys.wait(2000);
+
+        do game.dispose();
+
+        return;
+    }
+}

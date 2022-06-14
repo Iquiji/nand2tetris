@@ -1,0 +1,54 @@
+class PRNG{
+    field int max15bit;
+    field int ass;
+    field int quotient;
+    field int remainder;
+    field int state;
+
+    constructor PRNG new(){
+        let max15bit = 16067; // max signed 16bit
+        let ass = 502; // random
+        let quotient = max15bit / ass;
+        let remainder = PRNG.mod(max15bit,ass);
+        let state = 2458;
+
+        return this;
+    }
+    method int get(){
+        return state;
+    }
+    method int next(){
+        var int div,rem;
+        var int s,t;
+        var int result;
+
+        let div = state / quotient;
+        let rem = PRNG.mod(state,quotient);
+
+        let s = rem * ass;
+        let t = div * remainder;
+        let result = s - t;
+
+        if (result < 0){
+            let result = result + max15bit;
+        }
+        let state = result;
+
+        return state;
+    }
+    function int mod(int a,int b){
+        var int temp;
+        var int temp2;
+        var int temp3;
+
+        let temp3 = a/b;
+        let temp2 = b * temp3;
+        let temp = a - temp2;
+
+        return temp;
+    }
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

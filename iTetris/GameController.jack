@@ -1,0 +1,191 @@
+class GameController {
+    field PRNG rng;
+    field Board landed_board;
+    field Piece active_piece;
+    field Piece next_piece;
+
+    constructor GameController new(){
+        let rng = PRNG.new();
+        let landed_board = Board.new();
+        let active_piece = genNewPiece();
+        do rng.next();
+        do rng.next();
+        do rng.next();
+        let next_piece = genNewPiece();
+
+        return this;
+    }
+    method void run(){
+        var String dbg_msg;
+        var String rng_msg;
+        var String score_msg;
+        var String speed_msg;
+        var char key;
+        var int mov_x,mov_y;
+        var int collision;
+        var int ground_collision;
+        var int score;
+        var int speed;
+        var int temp_for_score;
+
+        let score = 0;
+        let speed = 400;
+
+        let dbg_msg = "Collisions:";
+        let rng_msg = "RNG:";
+        let score_msg = "Score:";
+        let speed_msg = "Speed:";
+
+        while (true){
+            let collision = 0;
+
+            let mov_x = 0;
+            let mov_y = 1;
+
+            do Sys.wait(speed);
+
+            let key = Keyboard.keyPressed();
+
+            if (key = 65) { // A
+                do active_piece.rotateLeft();
+
+                let collision = active_piece.collisionCheck(landed_board);
+
+                if (collision > 0){
+                    do active_piece.rotateRight();
+                }
+            }
+            if (key = 68) { // D
+                do active_piece.rotateRight();
+
+                let collision = active_piece.collisionCheck(landed_board);
+
+                if (collision > 0){
+                    do active_piece.rotateLeft();
+                }
+            }
+            let collision = 0;
+
+            if (key = 133) { let mov_y = mov_y + 1; }   // down arrow
+            if (key = 130) { let mov_x = mov_x - 1; }   // left arrow
+            if (key = 132) { let mov_x = mov_x + 1; }   // right arrow
+
+            do active_piece.moveX(mov_x);
+
+            if (active_piece.collisionCheck(landed_board) > 0){
+                do active_piece.moveX(-mov_x);
+            }
+
+            let ground_collision = active_piece.moveY(mov_y);
+            let collision = collision + ground_collision;
+
+            let collision = collision + active_piece.collisionCheck(landed_board);
+
+            if (collision > 0){
+                if (collision > ground_collision){
+                    do active_piece.moveY(-mov_y);
+                }
+
+                do active_piece.integrate_piece_in_board(landed_board);
+
+                let active_piece = next_piece;
+                let next_piece = genNewPiece();
+            }
+
+            do flush();
+
+            do Output.moveCursor(0,0);
+            do Output.printString(dbg_msg);
+            do Output.println();
+            do Output.printInt(collision);
+            do Output.println();
+
+            do Output.printString(rng_msg);
+            do Output.println();
+            do Output.printInt(rng.get());
+            do Output.println();
+
+            do Output.printString(speed_msg);
+            do Output.println();
+            do Output.printInt(speed);
+            do Output.println();
+            do Output.println();
+
+            do Output.printString(score_msg);
+            do Output.println();
+            do Output.printInt(score);
+            do Output.println();
+
+            do rng.next();
+            // 40 	100 	300 	1200 
+            let temp_for_score = landed_board.checkLines();
+            if (temp_for_score = 1){
+                let temp_for_score = 400 / speed;
+                let score = score + temp_for_score; 
+
+                let speed = speed - ((temp_for_score/2) + 1);
+            } 
+            if (temp_for_score = 2){
+                let temp_for_score = 1000 / speed;
+                let score = score + temp_for_score; 
+
+                let speed = speed - (temp_for_score/2);
+            } 
+            if (temp_for_score = 3){
+                let temp_for_score = 3000 / speed;
+                let score = score + temp_for_score; 
+
+                let speed = speed - (temp_for_score/2);
+            } 
+            if (temp_for_score = 4){
+                let temp_for_score = 12000 / speed;
+                let score = score + temp_for_score;
+
+                let speed = speed - (temp_for_score/2);
+            } 
+        }
+        
+        return;
+    }
+
+    method Piece genNewPiece(){
+        var int num;
+        var Piece new;
+        let num = PRNG.mod(rng.get(),7);
+
+        let new = Piece.new(num);
+
+        return new;
+    }
+
+    method void flush(){
+        do Screen.clearScreen();
+        do Screen.setColor(true);
+
+        // draw board
+        do landed_board.flush();
+
+        // draw active piece
+        do active_piece.flush();
+        do next_piece.flush_next();
+
+        // draw borders
+        do Screen.drawLine(188,0,188,255);
+        do Screen.drawLine(316,0,316,255); 
+
+        do Screen.drawLine(400,100,400,160);
+        do Screen.drawLine(400,100,460,100); 
+        do Screen.drawLine(400,160,460,160);
+        do Screen.drawLine(460,100,460,160); 
+
+        return;
+    }
+
+    method void dispose() {
+        do rng.dispose();
+        do landed_board.dispose();
+        do active_piece.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

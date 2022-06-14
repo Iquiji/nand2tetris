@@ -1,0 +1,76 @@
+class Matrix2D{
+    field Array columns;
+    field int width, height;
+
+    // New Matrix with all values initialized to zero
+    constructor Matrix2D new(int w,int h){
+        var int witdh_idx,height_idx;
+        var Array rows;
+
+        let width = h;
+        let height = w;
+
+        let columns = Array.new(width);
+
+        let witdh_idx = 0;
+        let height_idx = 0;
+        while (witdh_idx < width){
+            let columns[witdh_idx] = Array.new(height);
+            while (height_idx < height){
+                let rows = columns[witdh_idx];
+                let rows[height_idx] = 0;
+                let height_idx = height_idx + 1;
+            }
+            let height_idx = 0;
+            let witdh_idx = witdh_idx + 1;
+        }
+        return this;
+    }
+    method int get(int w,int h){
+        var int res;
+        var int rows;
+
+        let rows = columns[h];
+        let res = rows[w];
+
+        return res;
+    }
+
+    method void set(int w,int h,int val){
+        var int rows;
+
+        let rows = columns[h];
+        let rows[w] = val;
+
+        return;
+    }
+
+    method void print(){
+        var int witdh_idx,height_idx;
+        var int to_print;
+        var Array rows;
+
+        let witdh_idx = 0;
+        let height_idx = 0;
+
+        while (witdh_idx < width){
+            while (height_idx < height){
+                let rows = columns[witdh_idx];
+                let to_print = rows[height_idx];
+                do Output.printInt(to_print);
+                do Output.printChar(32);
+                let height_idx = height_idx + 1;
+            }
+            do Output.println();
+            let height_idx = 0;
+            let witdh_idx = witdh_idx + 1;
+        }
+        return;
+    }
+
+    method void dispose() {
+      do columns.dispose();
+      do Memory.deAlloc(this);
+      return;
+    }
+}
