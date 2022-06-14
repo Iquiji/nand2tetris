@@ -26,6 +26,102 @@ M=M-1
 A=M
 A=M
 D=A-D
+@_COMP_LABEL_0_TRUE
+D; JEQ
+@_COMP_LABEL_0_FALSE
+0; JMP
+(_COMP_LABEL_0_TRUE)
+@SP
+A=M
+M=-1
+@SP
+M=M+1
+@_COMP_LABEL_0_END
+0; JMP
+(_COMP_LABEL_0_FALSE)
+@SP
+A=M
+M=0
+@SP
+M=M+1
+(_COMP_LABEL_0_END)
+
+// push constant 17
+@17
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// push constant 16
+@16
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// eq
+@SP
+M=M-1
+A=M
+D=M
+@SP
+M=M-1
+A=M
+A=M
+D=A-D
+@_COMP_LABEL_1_TRUE
+D; JEQ
+@_COMP_LABEL_1_FALSE
+0; JMP
+(_COMP_LABEL_1_TRUE)
+@SP
+A=M
+M=-1
+@SP
+M=M+1
+@_COMP_LABEL_1_END
+0; JMP
+(_COMP_LABEL_1_FALSE)
+@SP
+A=M
+M=0
+@SP
+M=M+1
+(_COMP_LABEL_1_END)
+
+// push constant 16
+@16
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// push constant 17
+@17
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// eq
+@SP
+M=M-1
+A=M
+D=M
+@SP
+M=M-1
+A=M
+A=M
+D=A-D
 @_COMP_LABEL_2_TRUE
 D; JEQ
 @_COMP_LABEL_2_FALSE
@@ -46,8 +142,8 @@ M=0
 M=M+1
 (_COMP_LABEL_2_END)
 
-// push constant 17
-@17
+// push constant 892
+@892
 D=A
 @SP
 A=M
@@ -55,8 +151,8 @@ M=D
 @SP
 M=M+1
 
-// push constant 16
-@16
+// push constant 891
+@891
 D=A
 @SP
 A=M
@@ -64,7 +160,103 @@ M=D
 @SP
 M=M+1
 
-// eq
+// lt
+@SP
+M=M-1
+A=M
+D=M
+@SP
+M=M-1
+A=M
+A=M
+D=A-D
+@_COMP_LABEL_3_TRUE
+D; JLT
+@_COMP_LABEL_3_FALSE
+0; JMP
+(_COMP_LABEL_3_TRUE)
+@SP
+A=M
+M=-1
+@SP
+M=M+1
+@_COMP_LABEL_3_END
+0; JMP
+(_COMP_LABEL_3_FALSE)
+@SP
+A=M
+M=0
+@SP
+M=M+1
+(_COMP_LABEL_3_END)
+
+// push constant 891
+@891
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// push constant 892
+@892
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// lt
+@SP
+M=M-1
+A=M
+D=M
+@SP
+M=M-1
+A=M
+A=M
+D=A-D
+@_COMP_LABEL_4_TRUE
+D; JLT
+@_COMP_LABEL_4_FALSE
+0; JMP
+(_COMP_LABEL_4_TRUE)
+@SP
+A=M
+M=-1
+@SP
+M=M+1
+@_COMP_LABEL_4_END
+0; JMP
+(_COMP_LABEL_4_FALSE)
+@SP
+A=M
+M=0
+@SP
+M=M+1
+(_COMP_LABEL_4_END)
+
+// push constant 891
+@891
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// push constant 891
+@891
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// lt
 @SP
 M=M-1
 A=M
@@ -75,7 +267,7 @@ A=M
 A=M
 D=A-D
 @_COMP_LABEL_5_TRUE
-D; JEQ
+D; JLT
 @_COMP_LABEL_5_FALSE
 0; JMP
 (_COMP_LABEL_5_TRUE)
@@ -94,8 +286,8 @@ M=0
 M=M+1
 (_COMP_LABEL_5_END)
 
-// push constant 16
-@16
+// push constant 32767
+@32767
 D=A
 @SP
 A=M
@@ -103,8 +295,8 @@ M=D
 @SP
 M=M+1
 
-// push constant 17
-@17
+// push constant 32766
+@32766
 D=A
 @SP
 A=M
@@ -112,7 +304,103 @@ M=D
 @SP
 M=M+1
 
-// eq
+// gt
+@SP
+M=M-1
+A=M
+D=M
+@SP
+M=M-1
+A=M
+A=M
+D=A-D
+@_COMP_LABEL_6_TRUE
+D; JGT
+@_COMP_LABEL_6_FALSE
+0; JMP
+(_COMP_LABEL_6_TRUE)
+@SP
+A=M
+M=-1
+@SP
+M=M+1
+@_COMP_LABEL_6_END
+0; JMP
+(_COMP_LABEL_6_FALSE)
+@SP
+A=M
+M=0
+@SP
+M=M+1
+(_COMP_LABEL_6_END)
+
+// push constant 32766
+@32766
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// push constant 32767
+@32767
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// gt
+@SP
+M=M-1
+A=M
+D=M
+@SP
+M=M-1
+A=M
+A=M
+D=A-D
+@_COMP_LABEL_7_TRUE
+D; JGT
+@_COMP_LABEL_7_FALSE
+0; JMP
+(_COMP_LABEL_7_TRUE)
+@SP
+A=M
+M=-1
+@SP
+M=M+1
+@_COMP_LABEL_7_END
+0; JMP
+(_COMP_LABEL_7_FALSE)
+@SP
+A=M
+M=0
+@SP
+M=M+1
+(_COMP_LABEL_7_END)
+
+// push constant 32766
+@32766
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// push constant 32766
+@32766
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// gt
 @SP
 M=M-1
 A=M
@@ -123,7 +411,7 @@ A=M
 A=M
 D=A-D
 @_COMP_LABEL_8_TRUE
-D; JEQ
+D; JGT
 @_COMP_LABEL_8_FALSE
 0; JMP
 (_COMP_LABEL_8_TRUE)
@@ -141,294 +429,6 @@ M=0
 @SP
 M=M+1
 (_COMP_LABEL_8_END)
-
-// push constant 892
-@892
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// push constant 891
-@891
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// lt
-@SP
-M=M-1
-A=M
-D=M
-@SP
-M=M-1
-A=M
-A=M
-D=A-D
-@_COMP_LABEL_11_TRUE
-D; JLT
-@_COMP_LABEL_11_FALSE
-0; JMP
-(_COMP_LABEL_11_TRUE)
-@SP
-A=M
-M=-1
-@SP
-M=M+1
-@_COMP_LABEL_11_END
-0; JMP
-(_COMP_LABEL_11_FALSE)
-@SP
-A=M
-M=0
-@SP
-M=M+1
-(_COMP_LABEL_11_END)
-
-// push constant 891
-@891
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// push constant 892
-@892
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// lt
-@SP
-M=M-1
-A=M
-D=M
-@SP
-M=M-1
-A=M
-A=M
-D=A-D
-@_COMP_LABEL_14_TRUE
-D; JLT
-@_COMP_LABEL_14_FALSE
-0; JMP
-(_COMP_LABEL_14_TRUE)
-@SP
-A=M
-M=-1
-@SP
-M=M+1
-@_COMP_LABEL_14_END
-0; JMP
-(_COMP_LABEL_14_FALSE)
-@SP
-A=M
-M=0
-@SP
-M=M+1
-(_COMP_LABEL_14_END)
-
-// push constant 891
-@891
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// push constant 891
-@891
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// lt
-@SP
-M=M-1
-A=M
-D=M
-@SP
-M=M-1
-A=M
-A=M
-D=A-D
-@_COMP_LABEL_17_TRUE
-D; JLT
-@_COMP_LABEL_17_FALSE
-0; JMP
-(_COMP_LABEL_17_TRUE)
-@SP
-A=M
-M=-1
-@SP
-M=M+1
-@_COMP_LABEL_17_END
-0; JMP
-(_COMP_LABEL_17_FALSE)
-@SP
-A=M
-M=0
-@SP
-M=M+1
-(_COMP_LABEL_17_END)
-
-// push constant 32767
-@32767
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// push constant 32766
-@32766
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// gt
-@SP
-M=M-1
-A=M
-D=M
-@SP
-M=M-1
-A=M
-A=M
-D=A-D
-@_COMP_LABEL_20_TRUE
-D; JGT
-@_COMP_LABEL_20_FALSE
-0; JMP
-(_COMP_LABEL_20_TRUE)
-@SP
-A=M
-M=-1
-@SP
-M=M+1
-@_COMP_LABEL_20_END
-0; JMP
-(_COMP_LABEL_20_FALSE)
-@SP
-A=M
-M=0
-@SP
-M=M+1
-(_COMP_LABEL_20_END)
-
-// push constant 32766
-@32766
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// push constant 32767
-@32767
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// gt
-@SP
-M=M-1
-A=M
-D=M
-@SP
-M=M-1
-A=M
-A=M
-D=A-D
-@_COMP_LABEL_23_TRUE
-D; JGT
-@_COMP_LABEL_23_FALSE
-0; JMP
-(_COMP_LABEL_23_TRUE)
-@SP
-A=M
-M=-1
-@SP
-M=M+1
-@_COMP_LABEL_23_END
-0; JMP
-(_COMP_LABEL_23_FALSE)
-@SP
-A=M
-M=0
-@SP
-M=M+1
-(_COMP_LABEL_23_END)
-
-// push constant 32766
-@32766
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// push constant 32766
-@32766
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-
-// gt
-@SP
-M=M-1
-A=M
-D=M
-@SP
-M=M-1
-A=M
-A=M
-D=A-D
-@_COMP_LABEL_26_TRUE
-D; JGT
-@_COMP_LABEL_26_FALSE
-0; JMP
-(_COMP_LABEL_26_TRUE)
-@SP
-A=M
-M=-1
-@SP
-M=M+1
-@_COMP_LABEL_26_END
-0; JMP
-(_COMP_LABEL_26_FALSE)
-@SP
-A=M
-M=0
-@SP
-M=M+1
-(_COMP_LABEL_26_END)
 
 // push constant 57
 @57
