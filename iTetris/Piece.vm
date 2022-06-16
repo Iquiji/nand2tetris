@@ -5,9 +5,8 @@ pop pointer 0
 push argument 0
 push constant 0
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_0
 push constant 4
 pop this 1
 push constant 1
@@ -40,13 +39,14 @@ push constant 0
 push constant 1
 call Matrix2D.set 4
 pop temp 0
-label IF_FALSE0
+goto Label_1
+label Label_0
+label Label_1
 push argument 0
 push constant 1
 eq
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+not
+if-goto Label_2
 push constant 3
 pop this 1
 push constant 2
@@ -79,13 +79,14 @@ push constant 1
 push constant 1
 call Matrix2D.set 4
 pop temp 0
-label IF_FALSE1
+goto Label_3
+label Label_2
+label Label_3
 push argument 0
 push constant 2
 eq
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
+not
+if-goto Label_4
 push constant 3
 pop this 1
 push constant 2
@@ -118,13 +119,14 @@ push constant 0
 push constant 1
 call Matrix2D.set 4
 pop temp 0
-label IF_FALSE2
+goto Label_5
+label Label_4
+label Label_5
 push argument 0
 push constant 3
 eq
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
+not
+if-goto Label_6
 push constant 2
 pop this 1
 push constant 2
@@ -157,13 +159,14 @@ push constant 1
 push constant 1
 call Matrix2D.set 4
 pop temp 0
-label IF_FALSE3
+goto Label_7
+label Label_6
+label Label_7
 push argument 0
 push constant 4
 eq
-if-goto IF_TRUE4
-goto IF_FALSE4
-label IF_TRUE4
+not
+if-goto Label_8
 push constant 3
 pop this 1
 push constant 2
@@ -196,13 +199,14 @@ push constant 0
 push constant 1
 call Matrix2D.set 4
 pop temp 0
-label IF_FALSE4
+goto Label_9
+label Label_8
+label Label_9
 push argument 0
 push constant 5
 eq
-if-goto IF_TRUE5
-goto IF_FALSE5
-label IF_TRUE5
+not
+if-goto Label_10
 push constant 3
 pop this 1
 push constant 2
@@ -235,13 +239,14 @@ push constant 0
 push constant 1
 call Matrix2D.set 4
 pop temp 0
-label IF_FALSE5
+goto Label_11
+label Label_10
+label Label_11
 push argument 0
 push constant 6
 eq
-if-goto IF_TRUE6
-goto IF_FALSE6
-label IF_TRUE6
+not
+if-goto Label_12
 push constant 3
 pop this 1
 push constant 2
@@ -274,7 +279,9 @@ push constant 1
 push constant 1
 call Matrix2D.set 4
 pop temp 0
-label IF_FALSE6
+goto Label_13
+label Label_12
+label Label_13
 push constant 4
 pop this 3
 push constant 0
@@ -316,25 +323,27 @@ pop this 3
 push this 3
 push constant 0
 lt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_14
 push constant 0
 pop this 3
-label IF_FALSE0
+goto Label_15
+label Label_14
+label Label_15
 push this 3
 push this 1
 add
 push constant 10
 gt
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+not
+if-goto Label_16
 push constant 10
 push this 1
 sub
 pop this 3
-label IF_FALSE1
+goto Label_17
+label Label_16
+label Label_17
 push constant 0
 return
 function Piece.moveY 0
@@ -349,31 +358,33 @@ push this 2
 add
 push constant 21
 gt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_18
 push constant 21
 push this 2
 sub
 pop this 4
 push constant 1
 return
-label IF_FALSE0
+goto Label_19
+label Label_18
+label Label_19
 push this 4
 push this 2
 add
 push constant 21
 eq
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+not
+if-goto Label_20
 push constant 21
 push this 2
 sub
 pop this 4
 push constant 1
 return
-label IF_FALSE1
+goto Label_21
+label Label_20
+label Label_21
 push constant 0
 return
 function Piece.rotateRight 6
@@ -387,18 +398,18 @@ push constant 0
 pop local 1
 push constant 0
 pop local 2
-label WHILE_EXP0
+label Label_22
 push local 1
 push this 1
 lt
 not
-if-goto WHILE_END0
-label WHILE_EXP1
+if-goto Label_23
+label Label_24
 push local 2
 push this 2
 lt
 not
-if-goto WHILE_END1
+if-goto Label_25
 push this 0
 push local 1
 push local 2
@@ -414,16 +425,16 @@ push local 2
 push constant 1
 add
 pop local 2
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_24
+label Label_25
 push constant 0
 pop local 2
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_22
+label Label_23
 push this 1
 pop local 3
 push this 2
@@ -440,18 +451,18 @@ push constant 0
 pop local 1
 push constant 0
 pop local 2
-label WHILE_EXP2
+label Label_26
 push local 1
 push this 1
 lt
 not
-if-goto WHILE_END2
-label WHILE_EXP3
+if-goto Label_27
+label Label_28
 push local 2
 push this 2
 lt
 not
-if-goto WHILE_END3
+if-goto Label_29
 push this 0
 push local 1
 push local 2
@@ -473,16 +484,16 @@ push local 2
 push constant 1
 add
 pop local 2
-goto WHILE_EXP3
-label WHILE_END3
+goto Label_28
+label Label_29
 push constant 0
 pop local 2
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP2
-label WHILE_END2
+goto Label_26
+label Label_27
 push local 0
 pop this 0
 push constant 0
@@ -498,18 +509,18 @@ push constant 0
 pop local 1
 push constant 0
 pop local 2
-label WHILE_EXP0
+label Label_30
 push local 1
 push this 1
 lt
 not
-if-goto WHILE_END0
-label WHILE_EXP1
+if-goto Label_31
+label Label_32
 push local 2
 push this 2
 lt
 not
-if-goto WHILE_END1
+if-goto Label_33
 push this 0
 push local 1
 push local 2
@@ -525,16 +536,16 @@ push local 2
 push constant 1
 add
 pop local 2
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_32
+label Label_33
 push constant 0
 pop local 2
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_30
+label Label_31
 push this 1
 pop local 3
 push this 2
@@ -551,18 +562,18 @@ push constant 0
 pop local 1
 push constant 0
 pop local 2
-label WHILE_EXP2
+label Label_34
 push local 1
 push this 1
 lt
 not
-if-goto WHILE_END2
-label WHILE_EXP3
+if-goto Label_35
+label Label_36
 push local 2
 push this 2
 lt
 not
-if-goto WHILE_END3
+if-goto Label_37
 push this 0
 push local 1
 push local 2
@@ -584,16 +595,16 @@ push local 2
 push constant 1
 add
 pop local 2
-goto WHILE_EXP3
-label WHILE_END3
+goto Label_36
+label Label_37
 push constant 0
 pop local 2
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP2
-label WHILE_END2
+goto Label_34
+label Label_35
 push local 0
 pop this 0
 push constant 0
@@ -605,18 +616,18 @@ push constant 0
 pop local 0
 push constant 0
 pop local 1
-label WHILE_EXP0
+label Label_38
 push local 0
 push this 1
 lt
 not
-if-goto WHILE_END0
-label WHILE_EXP1
+if-goto Label_39
+label Label_40
 push local 1
 push this 2
 lt
 not
-if-goto WHILE_END1
+if-goto Label_41
 push this 0
 push local 0
 push local 1
@@ -625,9 +636,8 @@ pop local 2
 push local 2
 push constant 1
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_42
 push constant 16
 push this 3
 add
@@ -652,13 +662,15 @@ push constant 11
 add
 call Screen.drawRectangle 4
 pop temp 0
-label IF_FALSE0
+goto Label_43
+label Label_42
+label Label_43
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_40
+label Label_41
 call Output.println 0
 pop temp 0
 push constant 0
@@ -667,8 +679,8 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_38
+label Label_39
 push constant 0
 return
 function Piece.flush_next 5
@@ -678,18 +690,18 @@ push constant 0
 pop local 0
 push constant 0
 pop local 1
-label WHILE_EXP0
+label Label_44
 push local 0
 push this 1
 lt
 not
-if-goto WHILE_END0
-label WHILE_EXP1
+if-goto Label_45
+label Label_46
 push local 1
 push this 2
 lt
 not
-if-goto WHILE_END1
+if-goto Label_47
 push this 0
 push local 0
 push local 1
@@ -698,9 +710,8 @@ pop local 2
 push local 2
 push constant 1
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_48
 push constant 30
 push this 3
 add
@@ -725,13 +736,15 @@ push constant 11
 add
 call Screen.drawRectangle 4
 pop temp 0
-label IF_FALSE0
+goto Label_49
+label Label_48
+label Label_49
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_46
+label Label_47
 call Output.println 0
 pop temp 0
 push constant 0
@@ -740,8 +753,8 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_44
+label Label_45
 push constant 0
 return
 function Piece.collisionCheck 5
@@ -749,18 +762,18 @@ push argument 0
 pop pointer 0
 push constant 0
 pop local 2
-label WHILE_EXP0
+label Label_50
 push local 0
 push this 1
 lt
 not
-if-goto WHILE_END0
-label WHILE_EXP1
+if-goto Label_51
+label Label_52
 push local 1
 push this 2
 lt
 not
-if-goto WHILE_END1
+if-goto Label_53
 push this 0
 push local 0
 push local 1
@@ -769,9 +782,8 @@ pop local 4
 push local 4
 push constant 1
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_54
 push argument 1
 push this 3
 push local 0
@@ -784,29 +796,32 @@ pop local 3
 push local 3
 push constant 1
 eq
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+not
+if-goto Label_56
 push local 2
 push constant 1
 add
 pop local 2
-label IF_FALSE1
-label IF_FALSE0
+goto Label_57
+label Label_56
+label Label_57
+goto Label_55
+label Label_54
+label Label_55
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_52
+label Label_53
 push constant 0
 pop local 1
 push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_50
+label Label_51
 push local 2
 return
 function Piece.integrate_piece_in_board 5
@@ -814,18 +829,18 @@ push argument 0
 pop pointer 0
 push constant 0
 pop local 2
-label WHILE_EXP0
+label Label_58
 push local 0
 push this 1
 lt
 not
-if-goto WHILE_END0
-label WHILE_EXP1
+if-goto Label_59
+label Label_60
 push local 1
 push this 2
 lt
 not
-if-goto WHILE_END1
+if-goto Label_61
 push this 0
 push local 0
 push local 1
@@ -834,9 +849,8 @@ pop local 4
 push local 4
 push constant 1
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_62
 push argument 1
 push this 3
 push local 0
@@ -847,21 +861,23 @@ add
 push constant 1
 call Board.set 4
 pop temp 0
-label IF_FALSE0
+goto Label_63
+label Label_62
+label Label_63
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_60
+label Label_61
 push constant 0
 pop local 1
 push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_58
+label Label_59
 push constant 0
 return
 function Piece.dispose 0

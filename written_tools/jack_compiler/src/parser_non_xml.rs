@@ -1,9 +1,9 @@
 #![allow(non_snake_case)]
 
 use core::panic;
-use std::{collections::HashMap, vec};
+use std::{collections::HashMap, vec, array};
 
-use crate::tokenizer::{Token, TokenType::*, Tokenizer};
+use crate::tokenizer::{TokenType::*, Tokenizer};
 
 #[derive(Debug, Clone, Copy)]
 pub enum SubroutineType {
@@ -761,6 +761,7 @@ impl Scope{
 }
 
 pub struct CodeGenerator {
+    main_class_name: String,
     class_table: Scope,
     subroutine_table: Scope,
     label_counter: u64,
@@ -783,10 +784,13 @@ impl CodeGenerator {
                 arg_counter: 0,
             },
             label_counter: 0,
+            main_class_name: String::new(),
         }
     }
     pub fn to_vm_code(&mut self, node: Class) -> String {
         let mut buf: Vec<String> = vec![];
+
+        self.main_class_name = node.name.clone();
 
         for class_level_var in node.var_dec.clone(){
             for name in class_level_var.variable_names{
@@ -794,6 +798,10 @@ impl CodeGenerator {
             }
         }
         for sub in node.sub_dec{
+            if let SubroutineType::Method = sub.subroutine_type {
+                self.subroutine_table.arg_counter += 1;
+            }
+
             for arg in sub.parameter_list.list{
                 self.subroutine_table.insert(arg.1, arg.0, DeclareType::Arg);
             }
@@ -842,6 +850,16 @@ impl CodeGenerator {
 
         match node{
             Statement::Let(let_statement) => {
+                // if array access then deal with it this way!:
+                // let arr[expression 1] = expression 2
+                // push arr
+                // VM code for computing and pushing the value of expression 1
+                // add // top stack value = RAM address of arr[expression1]
+                // VM code for computing and pushing the value of expression 2
+                // pop temp 0 // temp 0 = the value of expression2
+                // pop pointer 1
+                // push temp 0
+                // pop that 0
                 let var_to_assign_to;
                 let num_temp = self.subroutine_table.table.get(&let_statement.var_name);
                 if let Some(var) = num_temp{
@@ -857,7 +875,26 @@ impl CodeGenerator {
                     buf.push(format!("pop {} {}",var_to_assign_to.kind.to_string(),var_to_assign_to.number));
                 }else{
                     // Array access TODO
-                    todo!()
+                    buf.push(self.expression_to_vm_code(let_statement.bind_to));
+                    buf.push("pop temp 0".to_string());
+                    {
+                        let index = let_statement.array_acces.unwrap();
+                        let arr_var_to_use;
+                        if let Some(var) = self.subroutine_table.table.get(&let_statement.var_name){
+                            arr_var_to_use = var.clone();
+                        }else if let Some(var) = self.class_table.table.get(&let_statement.var_name){
+                            arr_var_to_use = var.clone();
+                        } else {
+                            panic!("var not found in class or subroutine to assign to with Let Statement with array");
+                        }
+        
+                        buf.push(format!("push {} {}",arr_var_to_use.kind.to_string(),arr_var_to_use.number));
+                        buf.push(self.expression_to_vm_code(index));
+                        buf.push("add".to_string());
+                        buf.push("pop pointer 1".to_string());
+                        buf.push("push temp 0".to_string());
+                        buf.push("pop that 0".to_string());
+                    }
                 }
             },
             Statement::If(if_statement) => {
@@ -982,7 +1019,20 @@ impl CodeGenerator {
 
         match node {
             Term::IntegerConstant(int) => buf.push(format!("push constant {}",int)),
-            Term::StringConstant(_) => todo!(),
+            Term::StringConstant(string_const) => {
+                let len = string_const.len();
+
+                buf.push(format!("push constant {}",len));
+
+                // call string.new
+                buf.push("call String.new 1".to_string());
+                // append all chars
+                for character in string_const.chars(){
+                    buf.push(format!("push constant {}",character as u8));
+                    buf.push("call String.appendChar 2".to_string());
+                }
+
+            },
             Term::KeywordConstant(key) => {
                 match key.as_str(){
                     "false" => {
@@ -1013,7 +1063,32 @@ impl CodeGenerator {
 
                 buf.push(format!("push {} {}",var_to_use.kind.to_string(),var_to_use.number))
             },
-            Term::ArrayAccess { array_name, index } => todo!(),
+            Term::ArrayAccess { array_name, index } => {
+                // let arr[expression 1] = expression 2
+                // push arr
+                // VM code for computing and pushing the value of expression 1
+                // add // top stack value = RAM address of arr[expression1]
+                // VM code for computing and pushing the value of expression 2
+                // pop temp 0 // temp 0 = the value of expression2
+                // pop pointer 1
+                // push temp 0
+                // pop that 0
+                let arr_var_to_use;
+                if let Some(var) = self.subroutine_table.table.get(&array_name){
+                    arr_var_to_use = var.clone();
+                }else if let Some(var) = self.class_table.table.get(&array_name){
+                    arr_var_to_use = var.clone();
+                } else {
+                    panic!("var not found in class or subroutine to assign to with Term::ArrayAccess");
+                }
+
+                buf.push(format!("push {} {}",arr_var_to_use.kind.to_string(),arr_var_to_use.number));
+
+                buf.push(self.expression_to_vm_code(*index));
+                buf.push("add".to_string());
+                buf.push("pop pointer 1".to_string());
+                buf.push("push that 0".to_string());
+            },
             Term::SubroutineCall(call) => {
                 buf.push(self.sub_call_to_vm_code(call));
             },
@@ -1035,16 +1110,38 @@ impl CodeGenerator {
     }
     fn sub_call_to_vm_code(&mut self,call: SubroutineCall) -> String{
         let mut buf: Vec<String> = vec![];
+        // Inject Argument for this if it is a method call :)
+        let mut class_of_callee = "IMPOSSIBLE".to_string();
+        let mut know_method_call_inc = 0;
+        if call.obj_name.is_some(){
+            if let Some(var) = self.subroutine_table.table.get(&call.obj_name.as_ref().unwrap().clone()){
+                buf.push(format!("push {} {}",var.kind.to_string(),var.number));
+                know_method_call_inc = 1;
+                if let Type::ClassName(name) = var.clone().v_type{
+                    class_of_callee = name;
+                }
+            }else if let Some(var) = self.class_table.table.get(&call.obj_name.as_ref().unwrap().clone()){
+                buf.push(format!("push {} {}",var.kind.to_string(),var.number));
+                know_method_call_inc = 1;
+                if let Type::ClassName(name) = var.clone().v_type{
+                    class_of_callee = name;
+                }
+            } else {
+                class_of_callee = call.obj_name.unwrap();
+                //eprintln!("var not found in class or subroutine to assign to with Term::VarName");
+            }
+        }else{
+            // if it is a local do call we just push 0 as first argument
+            class_of_callee = self.main_class_name.clone();
+            know_method_call_inc = 1;
+            buf.push("push pointer 0".to_string());
+        }
 
         for argument in &call.arguments.list{
             buf.push(self.expression_to_vm_code(argument.clone()));
         }
 
-        buf.push(format!("call {} {}",if call.obj_name.is_some(){
-            format!("{}.{}",call.obj_name.unwrap(),call.subroutine_name)
-        }else{
-            call.subroutine_name
-        },call.arguments.list.len()));
+        buf.push(format!("call {}.{} {}",class_of_callee,call.subroutine_name,call.arguments.list.len() + know_method_call_inc));
 
 
         buf.join("\n")

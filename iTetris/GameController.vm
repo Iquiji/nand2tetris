@@ -96,11 +96,11 @@ call String.appendChar 2
 push constant 58
 call String.appendChar 2
 pop local 3
-label WHILE_EXP0
-push constant 0
+label Label_0
+push constant 1
+neg
 not
-not
-if-goto WHILE_END0
+if-goto Label_1
 push constant 0
 pop local 7
 push constant 0
@@ -115,9 +115,8 @@ pop local 4
 push local 4
 push constant 65
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_2
 push this 2
 call Piece.rotateLeft 1
 pop temp 0
@@ -128,20 +127,22 @@ pop local 7
 push local 7
 push constant 0
 gt
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+not
+if-goto Label_4
 push this 2
 call Piece.rotateRight 1
 pop temp 0
-label IF_FALSE1
-label IF_FALSE0
+goto Label_5
+label Label_4
+label Label_5
+goto Label_3
+label Label_2
+label Label_3
 push local 4
 push constant 68
 eq
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
+not
+if-goto Label_6
 push this 2
 call Piece.rotateRight 1
 pop temp 0
@@ -152,49 +153,55 @@ pop local 7
 push local 7
 push constant 0
 gt
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
+not
+if-goto Label_8
 push this 2
 call Piece.rotateLeft 1
 pop temp 0
-label IF_FALSE3
-label IF_FALSE2
+goto Label_9
+label Label_8
+label Label_9
+goto Label_7
+label Label_6
+label Label_7
 push constant 0
 pop local 7
 push local 4
 push constant 133
 eq
-if-goto IF_TRUE4
-goto IF_FALSE4
-label IF_TRUE4
+not
+if-goto Label_10
 push local 6
 push constant 1
 add
 pop local 6
-label IF_FALSE4
+goto Label_11
+label Label_10
+label Label_11
 push local 4
 push constant 130
 eq
-if-goto IF_TRUE5
-goto IF_FALSE5
-label IF_TRUE5
+not
+if-goto Label_12
 push local 5
 push constant 1
 sub
 pop local 5
-label IF_FALSE5
+goto Label_13
+label Label_12
+label Label_13
 push local 4
 push constant 132
 eq
-if-goto IF_TRUE6
-goto IF_FALSE6
-label IF_TRUE6
+not
+if-goto Label_14
 push local 5
 push constant 1
 add
 pop local 5
-label IF_FALSE6
+goto Label_15
+label Label_14
+label Label_15
 push this 2
 push local 5
 call Piece.moveX 2
@@ -204,15 +211,16 @@ push this 1
 call Piece.collisionCheck 2
 push constant 0
 gt
-if-goto IF_TRUE7
-goto IF_FALSE7
-label IF_TRUE7
+not
+if-goto Label_16
 push this 2
 push local 5
 neg
 call Piece.moveX 2
 pop temp 0
-label IF_FALSE7
+goto Label_17
+label Label_16
+label Label_17
 push this 2
 push local 6
 call Piece.moveY 2
@@ -230,21 +238,21 @@ pop local 7
 push local 7
 push constant 0
 gt
-if-goto IF_TRUE8
-goto IF_FALSE8
-label IF_TRUE8
+not
+if-goto Label_18
 push local 7
 push local 8
 gt
-if-goto IF_TRUE9
-goto IF_FALSE9
-label IF_TRUE9
+not
+if-goto Label_20
 push this 2
 push local 6
 neg
 call Piece.moveY 2
 pop temp 0
-label IF_FALSE9
+goto Label_21
+label Label_20
+label Label_21
 push this 2
 push this 1
 call Piece.integrate_piece_in_board 2
@@ -254,7 +262,9 @@ pop this 2
 push pointer 0
 call GameController.genNewPiece 1
 pop this 3
-label IF_FALSE8
+goto Label_19
+label Label_18
+label Label_19
 push pointer 0
 call GameController.flush 1
 pop temp 0
@@ -314,9 +324,8 @@ pop local 11
 push local 11
 push constant 1
 eq
-if-goto IF_TRUE10
-goto IF_FALSE10
-label IF_TRUE10
+not
+if-goto Label_22
 push constant 400
 push local 10
 call Math.divide 2
@@ -333,13 +342,14 @@ push constant 1
 add
 sub
 pop local 10
-label IF_FALSE10
+goto Label_23
+label Label_22
+label Label_23
 push local 11
 push constant 2
 eq
-if-goto IF_TRUE11
-goto IF_FALSE11
-label IF_TRUE11
+not
+if-goto Label_24
 push constant 1000
 push local 10
 call Math.divide 2
@@ -354,13 +364,14 @@ push constant 2
 call Math.divide 2
 sub
 pop local 10
-label IF_FALSE11
+goto Label_25
+label Label_24
+label Label_25
 push local 11
 push constant 3
 eq
-if-goto IF_TRUE12
-goto IF_FALSE12
-label IF_TRUE12
+not
+if-goto Label_26
 push constant 3000
 push local 10
 call Math.divide 2
@@ -375,13 +386,14 @@ push constant 2
 call Math.divide 2
 sub
 pop local 10
-label IF_FALSE12
+goto Label_27
+label Label_26
+label Label_27
 push local 11
 push constant 4
 eq
-if-goto IF_TRUE13
-goto IF_FALSE13
-label IF_TRUE13
+not
+if-goto Label_28
 push constant 12000
 push local 10
 call Math.divide 2
@@ -396,9 +408,11 @@ push constant 2
 call Math.divide 2
 sub
 pop local 10
-label IF_FALSE13
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_29
+label Label_28
+label Label_29
+goto Label_0
+label Label_1
 push constant 0
 return
 function GameController.genNewPiece 2
@@ -419,8 +433,8 @@ push argument 0
 pop pointer 0
 call Screen.clearScreen 0
 pop temp 0
-push constant 0
-not
+push constant 1
+neg
 call Screen.setColor 1
 pop temp 0
 push this 1

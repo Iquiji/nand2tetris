@@ -13,38 +13,38 @@ push constant 0
 pop local 0
 push constant 0
 pop local 1
-label WHILE_EXP0
+label Label_0
 push local 0
 push this 1
 lt
 not
-if-goto WHILE_END0
-push local 0
-push this 0
-add
+if-goto Label_1
 push this 2
 call Array.new 1
 pop temp 0
+push this 0
+push local 0
+add
 pop pointer 1
 push temp 0
 pop that 0
-label WHILE_EXP1
+label Label_2
 push local 1
 push this 2
 lt
 not
-if-goto WHILE_END1
-push local 0
+if-goto Label_3
 push this 0
+push local 0
 add
 pop pointer 1
 push that 0
 pop local 2
-push local 1
-push local 2
-add
 push constant 0
 pop temp 0
+push local 2
+push local 1
+add
 pop pointer 1
 push temp 0
 pop that 0
@@ -52,29 +52,29 @@ push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_2
+label Label_3
 push constant 0
 pop local 1
 push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_0
+label Label_1
 push pointer 0
 return
 function Matrix2D.get 2
 push argument 0
 pop pointer 0
-push argument 2
 push this 0
+push argument 2
 add
 pop pointer 1
 push that 0
 pop local 1
-push argument 1
 push local 1
+push argument 1
 add
 pop pointer 1
 push that 0
@@ -84,17 +84,17 @@ return
 function Matrix2D.set 1
 push argument 0
 pop pointer 0
-push argument 2
 push this 0
+push argument 2
 add
 pop pointer 1
 push that 0
 pop local 0
-push argument 1
-push local 0
-add
 push argument 3
 pop temp 0
+push local 0
+push argument 1
+add
 pop pointer 1
 push temp 0
 pop that 0
@@ -107,26 +107,26 @@ push constant 0
 pop local 0
 push constant 0
 pop local 1
-label WHILE_EXP0
+label Label_4
 push local 0
 push this 1
 lt
 not
-if-goto WHILE_END0
-label WHILE_EXP1
+if-goto Label_5
+label Label_6
 push local 1
 push this 2
 lt
 not
-if-goto WHILE_END1
-push local 0
+if-goto Label_7
 push this 0
+push local 0
 add
 pop pointer 1
 push that 0
 pop local 3
-push local 1
 push local 3
+push local 1
 add
 pop pointer 1
 push that 0
@@ -141,8 +141,8 @@ push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_6
+label Label_7
 call Output.println 0
 pop temp 0
 push constant 0
@@ -151,8 +151,8 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_4
+label Label_5
 push constant 0
 return
 function Matrix2D.dispose 0

@@ -49,14 +49,15 @@ pop local 4
 push local 4
 push constant 0
 lt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_0
 push local 4
 push this 0
 add
 pop local 4
-label IF_FALSE0
+goto Label_1
+label Label_0
+label Label_1
 push local 4
 pop this 4
 push this 4

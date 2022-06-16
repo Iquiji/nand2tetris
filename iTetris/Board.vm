@@ -38,26 +38,25 @@ push constant 20
 pop local 1
 push constant 0
 pop local 5
-label WHILE_EXP0
+label Label_0
 push local 1
 push constant 0
 gt
 not
-if-goto WHILE_END0
+if-goto Label_1
 push constant 0
 pop local 2
-label WHILE_EXP1
+label Label_2
 push local 0
 push constant 10
 lt
 not
-if-goto WHILE_END1
+if-goto Label_3
 push local 5
 push constant 0
 gt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_4
 push this 0
 push local 0
 push local 1
@@ -77,45 +76,47 @@ push local 1
 push constant 0
 call Matrix2D.set 4
 pop temp 0
-label IF_FALSE0
+goto Label_5
+label Label_4
+label Label_5
 push this 0
 push local 0
 push local 1
 call Matrix2D.get 3
 push constant 1
 eq
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+not
+if-goto Label_6
 push local 2
 push constant 1
 add
 pop local 2
-label IF_FALSE1
+goto Label_7
+label Label_6
+label Label_7
 push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_2
+label Label_3
 push local 2
 push constant 10
 eq
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
+not
+if-goto Label_8
 push local 5
 push constant 1
 add
 pop local 5
 push constant 0
 pop local 0
-label WHILE_EXP2
+label Label_10
 push local 0
 push constant 10
 lt
 not
-if-goto WHILE_END2
+if-goto Label_11
 push this 0
 push local 0
 push local 1
@@ -126,17 +127,19 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP2
-label WHILE_END2
-label IF_FALSE2
+goto Label_10
+label Label_11
+goto Label_9
+label Label_8
+label Label_9
 push constant 0
 pop local 0
 push local 1
 push constant 1
 sub
 pop local 1
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_0
+label Label_1
 push local 5
 return
 function Board.flush 5
@@ -146,18 +149,18 @@ push constant 0
 pop local 0
 push constant 0
 pop local 1
-label WHILE_EXP0
+label Label_12
 push local 0
 push constant 10
 lt
 not
-if-goto WHILE_END0
-label WHILE_EXP1
+if-goto Label_13
+label Label_14
 push local 1
 push constant 21
 lt
 not
-if-goto WHILE_END1
+if-goto Label_15
 push this 0
 push local 0
 push local 1
@@ -166,9 +169,8 @@ pop local 2
 push local 2
 push constant 1
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+not
+if-goto Label_16
 push constant 16
 push local 0
 add
@@ -189,21 +191,23 @@ push constant 11
 add
 call Screen.drawRectangle 4
 pop temp 0
-label IF_FALSE0
+goto Label_17
+label Label_16
+label Label_17
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP1
-label WHILE_END1
+goto Label_14
+label Label_15
 push constant 0
 pop local 1
 push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto Label_12
+label Label_13
 push constant 0
 return
 function Board.dispose 0
