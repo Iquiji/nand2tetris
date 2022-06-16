@@ -1,19 +1,18 @@
+mod parser_non_xml;
 mod tokenizer;
-mod parser;
 
 use std::{
     env,
-    fs::{File, read_to_string},
+    fs::{read_to_string, File},
     io::Write,
     path::Path,
     time::Instant,
 };
 
+use crate::parser_non_xml::{Parser, CodeGenerator};
 use crate::tokenizer::Tokenizer;
-use crate::parser::Parser;
 
-
-fn main() -> Result<(), Box<dyn std::error::Error>>{
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let start_start = Instant::now();
 
     let args: Vec<String> = env::args().collect();
@@ -37,12 +36,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
                 let temp = file_path.file_name().unwrap().to_str().unwrap();
                 all_files_to_process.push(temp.to_string());
             }
-
         }
 
-        for file_name in all_files_to_process{
-            
-            println!("\n+ Proccesing File: {:?}", &base_path.join(file_name.clone()));
+        for file_name in all_files_to_process {
+            println!(
+                "\n+ Proccesing File: {:?}",
+                &base_path.join(file_name.clone())
+            );
 
             let out_file_path = base_path.join(&file_name).with_extension("T.xml");
 
@@ -63,19 +63,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
             let mut file = File::create(out_file_path.clone())?;
             file.write_all(test_t_xml.as_bytes())?;
 
-            let test_xml = Parser::from_tokenizer(tokenizer).compileClass().to_xml_string();
+            let parsed_file = Parser::from_tokenizer(tokenizer).compileClass();
 
             let duration = start.elapsed();
             println!("- Parsing finished for file!: {:?}", duration);
             let start = Instant::now();
 
-            let mut file = File::create(base_path.join(&file_name).with_extension("P.xml"))?;
-            file.write_all(test_xml.as_bytes())?;
+            let compiled_file = CodeGenerator::new().to_vm_code(parsed_file);
+
+            let duration = start.elapsed();
+            println!("- Compiling finished for file!: {:?}", duration);
+            let start = Instant::now();
+
+            let mut file = File::create(base_path.join(&file_name).with_extension("vm"))?;
+            file.write_all(compiled_file.as_bytes())?;
 
             let duration = start.elapsed();
             println!("- Flush VM Code to File!: {:?}", duration);
         }
-
     } else {
         let in_file_path = path;
         let out_file_path = path.with_extension("T.xml");
@@ -88,7 +93,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
 
         let mut file = File::create(out_file_path)?;
         file.write_all(test_t_xml.as_bytes())?;
-    }    
+    }
 
     println!(
         "\nJack Compiler Total Time Used: {:?}",
