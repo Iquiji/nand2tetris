@@ -1,0 +1,117 @@
+class Math{
+    static Array TwoToThe;
+
+    function void init(){
+        var int idx,shifting;
+        let idx = 0;
+        let shifting = 1;
+
+        let TwoToThe = Array.new(16);
+
+        while (idx < 16){
+            let TwoToThe[idx] = shifting;
+
+            let idx = idx + 1;
+            let shifting = shifting + shifting; 
+        }
+        return;
+    }
+    function int multiply(int x,int y){
+        var int sum,shifted_x,y_bit_idx;
+        let sum = 0;
+        let shifted_x = x;
+
+        let y_bit_idx = 0;
+
+        while (y_bit_idx < 16){
+
+            if (~(Math.bit(y_bit_idx,y) = 0)){
+                let sum = sum + shifted_x;
+            }
+
+            // shift x
+            let shifted_x = shifted_x + shifted_x;
+            let y_bit_idx = y_bit_idx + 1;
+        }
+
+        return sum;
+    }
+    function int divide(int x,int y){
+        var int res;
+        let res = Math.divide_helper(Math.abs(x),Math.abs(y));
+
+        if (x < 0){
+            if (y < 0){
+                return res;
+            }
+            else{
+                return -res;
+            }
+        }
+        else{
+            if (y < 0){
+                return -res;
+            }
+            else{
+                return res;
+            }
+        }
+
+    }
+    function in divide_helper(int x,int y){
+        var int q;
+        if ((x < y) | (y < 0)) { return 0;}
+
+        let q = Math.divide_helper(x,y+y);
+
+        if ((x - ((q + q)*y)) < y) {
+            return q + q;   
+        }
+        else {
+            return q + q + 1;
+        }
+    }
+    function int min(int x,int y){
+        if (x < y){
+            return x;
+        }
+        else{
+            return y;
+        }
+    }
+    function int max(int x,int y){
+        if (x < y){
+            return y;
+        }
+        else{
+            return x;
+        }
+    }
+    function int abs(int x){
+        if (x < 0){
+            return -x;
+        }
+        else{
+            return x;
+        }
+    }
+    function int sqrt(int x){
+        var int y,j,temp;
+
+        let y = 0;
+        let j = 8;
+
+        while (~(j = 0)){
+            let j = j - 1;
+            let temp = y + TwoToThe[j];
+            let temp = temp * temp;
+            if ((~(temp > x)) & (temp > 0)){
+                let y = y + TwoToThe[j];
+            }
+        }
+        return y;
+    }
+    function int bit(int bit,int num){
+        return (TwoToThe[bit] & num);
+    }
+}
