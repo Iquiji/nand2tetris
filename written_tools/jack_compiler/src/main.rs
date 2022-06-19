@@ -31,6 +31,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         for file_path in dir {
             let file_path = file_path?.path();
+            if file_path.is_dir(){
+                continue;
+            }
             if file_path.extension().unwrap().to_str().unwrap() == "jack" {
                 // only handle .vm files
                 let temp = file_path.file_name().unwrap().to_str().unwrap();

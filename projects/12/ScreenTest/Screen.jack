@@ -10,9 +10,23 @@
  * the screen is indexed (0,0).
  */
 class Screen {
+    static int color;
+    static Array pixel_idx;
 
     /** Initializes the Screen. */
     function void init() {
+        var int idx_for_making;
+        var int shifting_bit;
+
+        let color = true;
+        let idx_for_making = 15;
+
+        while (~(idx_for_making = -1)){
+
+        }
+
+
+        return;
     }
 
     /** Erases the entire screen. */
